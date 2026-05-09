@@ -1,0 +1,8 @@
+argparse
+pathlib
+datetime
+requests
+bs4
+pandas 
+openpyxl
+playwright

@@ -1,0 +1,229 @@
+# FIFA World Cup 2026 - Monte Carlo Simulation Metadata
+# Generated: 2026-05-09
+# Description: Documentation for all JSON files and scripts in the World Cup simulation project
+
+## OVERVIEW
+This project simulates the FIFA World Cup 2026 using Monte Carlo methods across multiple phases:
+- Group Stage: 1000 simulations of group rankings
+- Elimination Phase: 100 simulations of knockout tournament
+- Champion Probabilities: Market-based odds for tournament winner
+
+## SCRIPTS
+
+### models/groups.py
+Simulates group stage outcomes using Monte Carlo methods.
+- Input: data/bet365_group.json (scraped betting odds)
+- Output: Multiple JSON files with simulation results
+- Method: Estimates team strength from odds, adds random noise, ranks teams
+
+### models/elimination.py
+Simulates knockout tournament phase.
+- Input: data/bet365_champions.json (champion odds), data/classified.json (qualified teams)
+- Output: Tournament simulation results
+- Method: Uses market probabilities to simulate match outcomes
+
+### models/combinations.py
+Generates possible slot combinations for knockout tournament.
+- Output: data/third_combinations.json
+- Method: Creates all valid mappings of group winners to tournament slots
+
+## FILE DESCRIPTIONS
+
+### data/bet365_group.json
+Scraped betting odds for group stage outcomes.
+
+STRUCTURE:
+{
+  "groups": [
+    {
+      "group": "Group A",
+      "teams": [
+        {
+          "position": 1,
+          "country": "Mexico",
+          "odds": {
+            "win_group": 2.0,
+            "group_qual_yes": 1.11,
+            "group_qual_no": 6.5,
+            "win_group_prob": 0.5,
+            "group_qual_yes_prob": 0.9,
+            "group_qual_no_prob": 0.1
+          }
+        }
+      ]
+    }
+  ]
+}
+
+### data/bet365_champions.json
+Scraped betting odds for tournament champion.
+
+STRUCTURE:
+[
+  {
+    "team": "Brazil",
+    "odds": 5.0,
+    "champion_prob": 0.2
+  }
+]
+
+### data/group_scenarios.json
+Contains all group rankings for each simulation.
+
+STRUCTURE:
+{
+  "simulations": [
+    {
+      "simulation": 0,
+      "probability": 0.001,
+      "groups": [
+        {
+          "group": "Group A",
+          "ranking": [
+            {
+              "position": 1,
+              "country": "Mexico",
+              "score": 0.5896
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
+
+### data/best_thirds.json
+Top 8 third-place teams for each simulation.
+
+STRUCTURE:
+[
+  {
+    "simulation": 0,
+    "best_thirds": [
+      {
+        "position": 3,
+        "country": "Portugal",
+        "score": 0.2341
+      }
+    ]
+  }
+]
+
+### data/eliminated.json
+Eliminated teams for each simulation.
+
+STRUCTURE:
+[
+  {
+    "simulation": 0,
+    "eliminated": [
+      {
+        "position": 4,
+        "country": "South Africa",
+        "score": -0.1657
+      }
+    ]
+  }
+]
+
+### data/classified.json
+Qualified teams for each simulation.
+
+STRUCTURE:
+[
+  {
+    "simulation": 0,
+    "classified": [
+      {
+        "country": "Mexico",
+        "type": "direct"
+      }
+    ]
+  }
+]
+
+### data/final_probabilities.json
+Aggregated group stage results.
+
+STRUCTURE:
+{
+  "Mexico": {
+    "direct": 0.723,
+    "best_third": 0.154,
+    "eliminated": 0.123,
+    "direct_count": 723,
+    "best_third_count": 154,
+    "eliminated_count": 123
+  }
+}
+
+### data/third_combinations.json
+Valid slot combinations for knockout tournament.
+
+STRUCTURE:
+{
+  "combinations": [
+    {
+      "id": 1,
+      "slot_map": {
+        "A": "E",
+        "B": "F",
+        "C": "G",
+        "D": "H"
+      },
+      "third_place_order": [
+        "3E", "3J", "3I", "3F", "3H", "3G", "3L", "3K"
+      ]
+    }
+  ]
+}
+
+## INTERPRETATION NOTES
+
+### Performance Scores
+- Higher scores = better simulated performance
+- Scores are relative within each simulation
+- Not comparable across different simulations
+
+### Probability Fields
+- All probability fields are fractions (0.0 to 1.0)
+- Calculated as: count / N_SIMULATIONS
+- "eliminated" includes all teams that did not qualify
+
+### Count Fields
+- Raw scenario counts for verification
+- Should sum appropriately across event types
+
+### Best Third Rule
+- Top 8 third-place teams qualify for knockout
+- Selection based on simulated score among thirds
+
+### Slot Combinations
+- Maps group winners to tournament positions
+- Ensures valid tournament bracket structure
+- Third-place teams assigned to specific slots
+
+## TECHNICAL DETAILS
+
+### Group Stage Simulation
+1. Estimate team strength from market probabilities
+2. Normalize strengths by group
+3. Add random noise using t-distribution
+4. Rank teams within each group
+5. Apply best third rule
+
+### Elimination Phase Simulation
+1. Use champion market odds as strength measure
+2. Adjust for tournament phase difficulty
+3. Simulate matches using probabilistic model
+4. Track tournament progression
+
+### Data Sources
+- Bet365 betting odds (scraped HTML)
+- Official FIFA group compositions
+- Normalized market probabilities
+
+### Reproducibility
+- Fixed random seeds ensure identical results
+- Same input data produces same output
+- Change SEED for different sequences

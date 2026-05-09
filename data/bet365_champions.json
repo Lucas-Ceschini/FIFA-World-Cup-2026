@@ -1,0 +1,244 @@
+{
+  "teams": [
+    {
+      "team": "Spain",
+      "odds": 5.5,
+      "odds_prob": 0.1485
+    },
+    {
+      "team": "France",
+      "odds": 6.0,
+      "odds_prob": 0.1361
+    },
+    {
+      "team": "England",
+      "odds": 7.0,
+      "odds_prob": 0.1167
+    },
+    {
+      "team": "Brazil",
+      "odds": 9.0,
+      "odds_prob": 0.0907
+    },
+    {
+      "team": "Argentina",
+      "odds": 9.0,
+      "odds_prob": 0.0907
+    },
+    {
+      "team": "Portugal",
+      "odds": 12.0,
+      "odds_prob": 0.0681
+    },
+    {
+      "team": "Germany",
+      "odds": 13.0,
+      "odds_prob": 0.0628
+    },
+    {
+      "team": "Netherlands",
+      "odds": 21.0,
+      "odds_prob": 0.0389
+    },
+    {
+      "team": "Norway",
+      "odds": 26.0,
+      "odds_prob": 0.0314
+    },
+    {
+      "team": "Belgium",
+      "odds": 34.0,
+      "odds_prob": 0.024
+    },
+    {
+      "team": "Colombia",
+      "odds": 34.0,
+      "odds_prob": 0.024
+    },
+    {
+      "team": "Japan",
+      "odds": 51.0,
+      "odds_prob": 0.016
+    },
+    {
+      "team": "Morocco",
+      "odds": 51.0,
+      "odds_prob": 0.016
+    },
+    {
+      "team": "USA",
+      "odds": 67.0,
+      "odds_prob": 0.0122
+    },
+    {
+      "team": "Uruguay",
+      "odds": 67.0,
+      "odds_prob": 0.0122
+    },
+    {
+      "team": "Switzerland",
+      "odds": 81.0,
+      "odds_prob": 0.0101
+    },
+    {
+      "team": "Mexico",
+      "odds": 81.0,
+      "odds_prob": 0.0101
+    },
+    {
+      "team": "Croatia",
+      "odds": 81.0,
+      "odds_prob": 0.0101
+    },
+    {
+      "team": "Türkiye",
+      "odds": 81.0,
+      "odds_prob": 0.0101
+    },
+    {
+      "team": "Ecuador",
+      "odds": 101.0,
+      "odds_prob": 0.0081
+    },
+    {
+      "team": "Senegal",
+      "odds": 101.0,
+      "odds_prob": 0.0081
+    },
+    {
+      "team": "Sweden",
+      "odds": 126.0,
+      "odds_prob": 0.0065
+    },
+    {
+      "team": "Canada",
+      "odds": 151.0,
+      "odds_prob": 0.0054
+    },
+    {
+      "team": "Austria",
+      "odds": 151.0,
+      "odds_prob": 0.0054
+    },
+    {
+      "team": "Paraguay",
+      "odds": 151.0,
+      "odds_prob": 0.0054
+    },
+    {
+      "team": "Scotland",
+      "odds": 251.0,
+      "odds_prob": 0.0033
+    },
+    {
+      "team": "Bosnia-Herzegovina",
+      "odds": 251.0,
+      "odds_prob": 0.0033
+    },
+    {
+      "team": "Ivory Coast",
+      "odds": 301.0,
+      "odds_prob": 0.0027
+    },
+    {
+      "team": "Egypt",
+      "odds": 301.0,
+      "odds_prob": 0.0027
+    },
+    {
+      "team": "Czechia",
+      "odds": 301.0,
+      "odds_prob": 0.0027
+    },
+    {
+      "team": "Ghana",
+      "odds": 401.0,
+      "odds_prob": 0.002
+    },
+    {
+      "team": "Algeria",
+      "odds": 401.0,
+      "odds_prob": 0.002
+    },
+    {
+      "team": "South Korea",
+      "odds": 501.0,
+      "odds_prob": 0.0016
+    },
+    {
+      "team": "Tunisia",
+      "odds": 501.0,
+      "odds_prob": 0.0016
+    },
+    {
+      "team": "Australia",
+      "odds": 501.0,
+      "odds_prob": 0.0016
+    },
+    {
+      "team": "Iran",
+      "odds": 501.0,
+      "odds_prob": 0.0016
+    },
+    {
+      "team": "DR Congo",
+      "odds": 751.0,
+      "odds_prob": 0.0011
+    },
+    {
+      "team": "South Africa",
+      "odds": 1001.0,
+      "odds_prob": 0.0008
+    },
+    {
+      "team": "Qatar",
+      "odds": 1001.0,
+      "odds_prob": 0.0008
+    },
+    {
+      "team": "Saudi Arabia",
+      "odds": 1001.0,
+      "odds_prob": 0.0008
+    },
+    {
+      "team": "Panama",
+      "odds": 1501.0,
+      "odds_prob": 0.0005
+    },
+    {
+      "team": "New Zealand",
+      "odds": 1501.0,
+      "odds_prob": 0.0005
+    },
+    {
+      "team": "Iraq",
+      "odds": 1501.0,
+      "odds_prob": 0.0005
+    },
+    {
+      "team": "Uzbekistan",
+      "odds": 1501.0,
+      "odds_prob": 0.0005
+    },
+    {
+      "team": "Cape Verde",
+      "odds": 2001.0,
+      "odds_prob": 0.0004
+    },
+    {
+      "team": "Curacao",
+      "odds": 2001.0,
+      "odds_prob": 0.0004
+    },
+    {
+      "team": "Jordan",
+      "odds": 2501.0,
+      "odds_prob": 0.0003
+    },
+    {
+      "team": "Haiti",
+      "odds": 3001.0,
+      "odds_prob": 0.0003
+    }
+  ]
+}

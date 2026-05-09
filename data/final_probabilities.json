@@ -1,0 +1,386 @@
+{
+  "Czechia": {
+    "direct": 0.5714,
+    "best_third": 0.18123,
+    "eliminated": 0.24737,
+    "direct_count": 57140,
+    "best_third_count": 18123,
+    "eliminated_count": 24737
+  },
+  "Mexico": {
+    "direct": 0.73949,
+    "best_third": 0.12354,
+    "eliminated": 0.13697,
+    "direct_count": 73949,
+    "best_third_count": 12354,
+    "eliminated_count": 13697
+  },
+  "Canada": {
+    "direct": 0.53829,
+    "best_third": 0.19035,
+    "eliminated": 0.27136,
+    "direct_count": 53829,
+    "best_third_count": 19035,
+    "eliminated_count": 27136
+  },
+  "Bosnia-Herzegovina": {
+    "direct": 0.51933,
+    "best_third": 0.19585,
+    "eliminated": 0.28482,
+    "direct_count": 51933,
+    "best_third_count": 19585,
+    "eliminated_count": 28482
+  },
+  "Scotland": {
+    "direct": 0.46717,
+    "best_third": 0.19766,
+    "eliminated": 0.33517,
+    "direct_count": 46717,
+    "best_third_count": 19766,
+    "eliminated_count": 33517
+  },
+  "Brazil": {
+    "direct": 0.76186,
+    "best_third": 0.11293,
+    "eliminated": 0.12521,
+    "direct_count": 76186,
+    "best_third_count": 11293,
+    "eliminated_count": 12521
+  },
+  "T\u00fcrkiye": {
+    "direct": 0.62391,
+    "best_third": 0.16521,
+    "eliminated": 0.21088,
+    "direct_count": 62391,
+    "best_third_count": 16521,
+    "eliminated_count": 21088
+  },
+  "USA": {
+    "direct": 0.72613,
+    "best_third": 0.12813,
+    "eliminated": 0.14574,
+    "direct_count": 72613,
+    "best_third_count": 12813,
+    "eliminated_count": 14574
+  },
+  "Germany": {
+    "direct": 0.74339,
+    "best_third": 0.12299,
+    "eliminated": 0.13362,
+    "direct_count": 74339,
+    "best_third_count": 12299,
+    "eliminated_count": 13362
+  },
+  "Ivory Coast": {
+    "direct": 0.4739,
+    "best_third": 0.2017,
+    "eliminated": 0.3244,
+    "direct_count": 47390,
+    "best_third_count": 20170,
+    "eliminated_count": 32440
+  },
+  "Netherlands": {
+    "direct": 0.77875,
+    "best_third": 0.10383,
+    "eliminated": 0.11742,
+    "direct_count": 77875,
+    "best_third_count": 10383,
+    "eliminated_count": 11742
+  },
+  "Tunisia": {
+    "direct": 0.28405,
+    "best_third": 0.17726,
+    "eliminated": 0.53869,
+    "direct_count": 28405,
+    "best_third_count": 17726,
+    "eliminated_count": 53869
+  },
+  "Iran": {
+    "direct": 0.43444,
+    "best_third": 0.19556,
+    "eliminated": 0.37,
+    "direct_count": 43444,
+    "best_third_count": 19556,
+    "eliminated_count": 37000
+  },
+  "Belgium": {
+    "direct": 0.78749,
+    "best_third": 0.09937,
+    "eliminated": 0.11314,
+    "direct_count": 78749,
+    "best_third_count": 9937,
+    "eliminated_count": 11314
+  },
+  "Uruguay": {
+    "direct": 0.53776,
+    "best_third": 0.18177,
+    "eliminated": 0.28047,
+    "direct_count": 53776,
+    "best_third_count": 18177,
+    "eliminated_count": 28047
+  },
+  "Spain": {
+    "direct": 0.78009,
+    "best_third": 0.10338,
+    "eliminated": 0.11653,
+    "direct_count": 78009,
+    "best_third_count": 10338,
+    "eliminated_count": 11653
+  },
+  "Senegal": {
+    "direct": 0.42277,
+    "best_third": 0.20292,
+    "eliminated": 0.37431,
+    "direct_count": 42277,
+    "best_third_count": 20292,
+    "eliminated_count": 37431
+  },
+  "France": {
+    "direct": 0.76071,
+    "best_third": 0.11215,
+    "eliminated": 0.12714,
+    "direct_count": 76071,
+    "best_third_count": 11215,
+    "eliminated_count": 12714
+  },
+  "Argentina": {
+    "direct": 0.76363,
+    "best_third": 0.11153,
+    "eliminated": 0.12484,
+    "direct_count": 76363,
+    "best_third_count": 11153,
+    "eliminated_count": 12484
+  },
+  "Algeria": {
+    "direct": 0.45387,
+    "best_third": 0.19973,
+    "eliminated": 0.3464,
+    "direct_count": 45387,
+    "best_third_count": 19973,
+    "eliminated_count": 34640
+  },
+  "Portugal": {
+    "direct": 0.76429,
+    "best_third": 0.11154,
+    "eliminated": 0.12417,
+    "direct_count": 76429,
+    "best_third_count": 11154,
+    "eliminated_count": 12417
+  },
+  "DR Congo": {
+    "direct": 0.39942,
+    "best_third": 0.20286,
+    "eliminated": 0.39772,
+    "direct_count": 39942,
+    "best_third_count": 20286,
+    "eliminated_count": 39772
+  },
+  "Ghana": {
+    "direct": 0.40913,
+    "best_third": 0.1988,
+    "eliminated": 0.39207,
+    "direct_count": 40913,
+    "best_third_count": 19880,
+    "eliminated_count": 39207
+  },
+  "Panama": {
+    "direct": 0.29017,
+    "best_third": 0.17557,
+    "eliminated": 0.53426,
+    "direct_count": 29017,
+    "best_third_count": 17557,
+    "eliminated_count": 53426
+  },
+  "Colombia": {
+    "direct": 0.56536,
+    "best_third": 0.17638,
+    "eliminated": 0.25826,
+    "direct_count": 56536,
+    "best_third_count": 17638,
+    "eliminated_count": 25826
+  },
+  "Sweden": {
+    "direct": 0.4272,
+    "best_third": 0.19592,
+    "eliminated": 0.37688,
+    "direct_count": 42720,
+    "best_third_count": 19592,
+    "eliminated_count": 37688
+  },
+  "Haiti": {
+    "direct": 0.25536,
+    "best_third": 0.16454,
+    "eliminated": 0.5801,
+    "direct_count": 25536,
+    "best_third_count": 16454,
+    "eliminated_count": 58010
+  },
+  "England": {
+    "direct": 0.78009,
+    "best_third": 0.10255,
+    "eliminated": 0.11736,
+    "direct_count": 78009,
+    "best_third_count": 10255,
+    "eliminated_count": 11736
+  },
+  "Cape Verde": {
+    "direct": 0.31053,
+    "best_third": 0.1826,
+    "eliminated": 0.50687,
+    "direct_count": 31053,
+    "best_third_count": 18260,
+    "eliminated_count": 50687
+  },
+  "Australia": {
+    "direct": 0.24709,
+    "best_third": 0.16848,
+    "eliminated": 0.58443,
+    "direct_count": 24709,
+    "best_third_count": 16848,
+    "eliminated_count": 58443
+  },
+  "Iraq": {
+    "direct": 0.26186,
+    "best_third": 0.17093,
+    "eliminated": 0.56721,
+    "direct_count": 26186,
+    "best_third_count": 17093,
+    "eliminated_count": 56721
+  },
+  "Ecuador": {
+    "direct": 0.54319,
+    "best_third": 0.18833,
+    "eliminated": 0.26848,
+    "direct_count": 54319,
+    "best_third_count": 18833,
+    "eliminated_count": 26848
+  },
+  "South Korea": {
+    "direct": 0.4474,
+    "best_third": 0.20228,
+    "eliminated": 0.35032,
+    "direct_count": 44740,
+    "best_third_count": 20228,
+    "eliminated_count": 35032
+  },
+  "Switzerland": {
+    "direct": 0.72107,
+    "best_third": 0.13101,
+    "eliminated": 0.14792,
+    "direct_count": 72107,
+    "best_third_count": 13101,
+    "eliminated_count": 14792
+  },
+  "Morocco": {
+    "direct": 0.51561,
+    "best_third": 0.18946,
+    "eliminated": 0.29493,
+    "direct_count": 51561,
+    "best_third_count": 18946,
+    "eliminated_count": 29493
+  },
+  "Paraguay": {
+    "direct": 0.40287,
+    "best_third": 0.2069,
+    "eliminated": 0.39023,
+    "direct_count": 40287,
+    "best_third_count": 20690,
+    "eliminated_count": 39023
+  },
+  "Curacao": {
+    "direct": 0.23952,
+    "best_third": 0.16247,
+    "eliminated": 0.59801,
+    "direct_count": 23952,
+    "best_third_count": 16247,
+    "eliminated_count": 59801
+  },
+  "Japan": {
+    "direct": 0.51,
+    "best_third": 0.18724,
+    "eliminated": 0.30276,
+    "direct_count": 51000,
+    "best_third_count": 18724,
+    "eliminated_count": 30276
+  },
+  "New Zealand": {
+    "direct": 0.29771,
+    "best_third": 0.1787,
+    "eliminated": 0.52359,
+    "direct_count": 29771,
+    "best_third_count": 17870,
+    "eliminated_count": 52359
+  },
+  "Saudi Arabia": {
+    "direct": 0.37162,
+    "best_third": 0.19396,
+    "eliminated": 0.43442,
+    "direct_count": 37162,
+    "best_third_count": 19396,
+    "eliminated_count": 43442
+  },
+  "Norway": {
+    "direct": 0.55466,
+    "best_third": 0.18162,
+    "eliminated": 0.26372,
+    "direct_count": 55466,
+    "best_third_count": 18162,
+    "eliminated_count": 26372
+  },
+  "Austria": {
+    "direct": 0.52311,
+    "best_third": 0.1858,
+    "eliminated": 0.29109,
+    "direct_count": 52311,
+    "best_third_count": 18580,
+    "eliminated_count": 29109
+  },
+  "Uzbekistan": {
+    "direct": 0.27093,
+    "best_third": 0.17493,
+    "eliminated": 0.55414,
+    "direct_count": 27093,
+    "best_third_count": 17493,
+    "eliminated_count": 55414
+  },
+  "Croatia": {
+    "direct": 0.52061,
+    "best_third": 0.18494,
+    "eliminated": 0.29445,
+    "direct_count": 52061,
+    "best_third_count": 18494,
+    "eliminated_count": 29445
+  },
+  "Qatar": {
+    "direct": 0.22131,
+    "best_third": 0.15696,
+    "eliminated": 0.62173,
+    "direct_count": 22131,
+    "best_third_count": 15696,
+    "eliminated_count": 62173
+  },
+  "Jordan": {
+    "direct": 0.25939,
+    "best_third": 0.16642,
+    "eliminated": 0.57419,
+    "direct_count": 25939,
+    "best_third_count": 16642,
+    "eliminated_count": 57419
+  },
+  "South Africa": {
+    "direct": 0.24171,
+    "best_third": 0.16255,
+    "eliminated": 0.59574,
+    "direct_count": 24171,
+    "best_third_count": 16255,
+    "eliminated_count": 59574
+  },
+  "Egypt": {
+    "direct": 0.48036,
+    "best_third": 0.18917,
+    "eliminated": 0.33047,
+    "direct_count": 48036,
+    "best_third_count": 18917,
+    "eliminated_count": 33047
+  }
+}
