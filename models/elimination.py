@@ -7,7 +7,7 @@ from imports import *
 SEED = 42
 np.random.seed(SEED)
 
-N_SIM = 100000
+N_SIM = 10000
 
 # =========================================================
 # LOAD DATA
