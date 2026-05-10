@@ -252,30 +252,58 @@ for sim in range(N_SIMULATIONS):
                     "score":    r["score"],
                 })
 
-    # ── Best 8 thirds ────────────────────────────────────────
+    # ── Best 6 thirds and playoffs for next 4 ──────────────
     all_thirds.sort(key=lambda x: x["score"], reverse=True)
-    best8 = all_thirds[:8]
-    worst = all_thirds[8:]
+    best6 = all_thirds[:6]
+    playoff_candidates = all_thirds[6:10]  # 7th to 10th best thirds
 
-    advancing_groups = {t["group"] for t in best8}
+    # Simulate third-place playoffs: two matches
+    def win_prob(sa, sb, k=0.9):
+        logit = k * (sa - sb)
+        return 1.0 / (1.0 + np.exp(-logit))
+
+    # Match 1: 7th vs 10th
+    a1, b1 = playoff_candidates[0], playoff_candidates[3]
+    winner1 = a1 if np.random.rand() < win_prob(a1["score"], b1["score"]) else b1
+
+    # Match 2: 8th vs 9th
+    a2, b2 = playoff_candidates[1], playoff_candidates[2]
+    winner2 = a2 if np.random.rand() < win_prob(a2["score"], b2["score"]) else b2
+
+    playoff_winners = [winner1, winner2]
+    all_advancing_thirds = best6 + playoff_winners
+
+    advancing_groups = {t["group"] for t in all_advancing_thirds}
     slot_map = get_third_slot_map(advancing_groups)   # slot → letra do grupo
 
-    for t in best8:
+    for t in all_advancing_thirds:
         # Descobre em qual slot de terceiro este time entra
-        # (qual THIRD_SLOTS aponta para o grupo deste terceiro)
         slot_key = next(
             (k for k, grp in slot_map.items() if grp == t["group"]),
             None
         )
+        ttype = "best_third" if t in best6 else "third_playoff"
         classified.append({
             "country":  t["country"],
             "group":    t["group"],
             "position": 3,
-            "type":     "best_third",
+            "type":     ttype,
             "score":    t["score"],
             "third_slot": slot_key,   # ex: "3rd_ABCDF" → informa ao elimination.py onde encaixar
         })
 
+    # Losers of playoffs are eliminated
+    for t in playoff_candidates:
+        if t not in playoff_winners:
+            all_elim.append({
+                "country":  t["country"],
+                "group":    t["group"],
+                "position": 3,
+                "score":    t["score"],
+            })
+
+    # The 11th and 12th thirds are already in worst = all_thirds[10:] wait, all_thirds[10:12]
+    worst = all_thirds[10:]
     for t in worst:
         all_elim.append({
             "country":  t["country"],
@@ -296,7 +324,7 @@ for sim in range(N_SIMULATIONS):
         "probability": 1 / N_SIMULATIONS,
         "groups":      sim_groups,
     })
-    best_thirds_all.append({"simulation": sim, "best_thirds": best8})
+    best_thirds_all.append({"simulation": sim, "best_thirds": all_advancing_thirds})
     eliminated_all.append({"simulation":  sim, "eliminated":  all_elim})
     classified_all.append({"simulation":  sim, "classified":  classified})
 
@@ -312,9 +340,11 @@ for country, v in stats.items():
     final[country] = {
         "direct":             v.get("direct",     0) / N_SIMULATIONS,
         "best_third":         v.get("best_third", 0) / N_SIMULATIONS,
+        "third_playoff":      v.get("third_playoff", 0) / N_SIMULATIONS,
         "eliminated":         v.get("eliminated", 0) / N_SIMULATIONS,
         "direct_count":       v.get("direct",     0),
         "best_third_count":   v.get("best_third", 0),
+        "third_playoff_count": v.get("third_playoff", 0),
         "eliminated_count":   v.get("eliminated", 0),
     }
 
@@ -333,7 +363,7 @@ print(f"alpha={alpha:.4f}  beta={beta:.4f}  gamma={gamma:.4f}")
 print(f"sigma={SIGMA:.3f}")
 
 # ── Ranking rápido de classificação ───────────────────────
-ranking = sorted(final.items(), key=lambda x: x[1]["direct"] + x[1]["best_third"], reverse=True)
+ranking = sorted(final.items(), key=lambda x: x[1]["direct"] + x[1]["best_third"] + x[1]["third_playoff"], reverse=True)
 print("\n── Top 16 por prob. de classificação ──────────────────")
 for country, v in ranking[:16]:
     print(f"  {country:<22}  direto={v['direct']:.1%}  3º={v['best_third']:.1%}  elim={v['eliminated']:.1%}")

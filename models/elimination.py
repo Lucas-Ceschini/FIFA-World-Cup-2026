@@ -19,11 +19,14 @@ with open("data/bet365_champions.json", "r") as f:
 with open("data/classified.json", "r") as f:
     groups_data = json.load(f)
 
+with open("data/combinacoes.json", "r") as f:
+    third_combinations = json.load(f)
+
 # =========================================================
 # PRIOR — força log-escala a partir das odds de campeão
 # =========================================================
 
-market_prob = {t["country"]: t["champion_prob"] for t in market}
+market_prob = {t["team"]: t["odds_prob"] for t in market["teams"]}
 
 # Fallback: mínimo real observado no mercado (evita -inf e discriminação excessiva)
 MIN_PROB = min(market_prob.values()) * 0.5
@@ -198,16 +201,17 @@ def get_classified_by_position(sim_data):
             firsts[group] = country
         elif pos == 2:
             seconds[group] = country
-        elif pos == 3 and ctype == "best_third":
+        elif pos == 3 and ctype in ("best_third", "third_playoff"):
             thirds[group] = country
 
     return firsts, seconds, thirds
 
-def assign_thirds(thirds_dict, eligible_groups_str):
+def assign_thirds(thirds_dict, eligible_groups_str, used_thirds):
     """
     Dado o conjunto de grupos elegíveis (ex: "ABCDF") e os
     terceiros colocados classificados, retorna o terceiro
-    colocado que veio de um dos grupos elegíveis.
+    colocado que veio de um dos grupos elegíveis, evitando
+    times já usados.
 
     Se mais de um terceiro vier de grupos elegíveis, escolhe
     o de maior força (proxy: market_prob) — reproduz o critério
@@ -219,7 +223,7 @@ def assign_thirds(thirds_dict, eligible_groups_str):
     candidates = [
         (grp, team)
         for grp, team in thirds_dict.items()
-        if grp in eligible
+        if grp in eligible and team not in used_thirds
     ]
 
     if not candidates:
@@ -227,14 +231,16 @@ def assign_thirds(thirds_dict, eligible_groups_str):
 
     # Escolhe o de maior força entre os elegíveis para este slot
     candidates.sort(key=lambda x: market_prob.get(x[1], MIN_PROB), reverse=True)
-    return candidates[0][1]
+    selected_team = candidates[0][1]
+    used_thirds.add(selected_team)
+    return selected_team
 
-def resolve_slot(slot, firsts, seconds, thirds):
+def resolve_slot(slot, firsts, seconds, thirds, used_thirds):
     """
     Resolve um slot do bracket para um nome de time.
     Ex: "1C" → firsts["C"]
         "2F" → seconds["F"]
-        "3rd_ABCDF" → assign_thirds(thirds, "ABCDF")
+        "3rd_ABCDF" → assign_thirds(thirds, "ABCDF", used_thirds)
     """
     if slot.startswith("1"):
         return firsts.get(slot[1], None)
@@ -242,7 +248,7 @@ def resolve_slot(slot, firsts, seconds, thirds):
         return seconds.get(slot[1], None)
     elif slot.startswith("3rd_"):
         eligible = slot[4:]  # ex: "ABCDF"
-        return assign_thirds(thirds, eligible)
+        return assign_thirds(thirds, eligible, used_thirds)
     return None
 
 def build_r32_bracket(sim_data):
@@ -260,9 +266,11 @@ def build_r32_bracket(sim_data):
     all_classified = [e["country"] for e in sim_data["classified"]]
 
     matchups = []
+    used_thirds = set()
+
     for slot_a, slot_b in R32_BRACKET:
-        team_a = resolve_slot(slot_a, firsts, seconds, thirds)
-        team_b = resolve_slot(slot_b, firsts, seconds, thirds)
+        team_a = resolve_slot(slot_a, firsts, seconds, thirds, used_thirds)
+        team_b = resolve_slot(slot_b, firsts, seconds, thirds, used_thirds)
 
         # Fallback se slot não resolvido (dados incompletos)
         if team_a is None:
@@ -453,6 +461,28 @@ with open("data/knockout_tree_scenarios.json", "w") as f:
 
 with open("data/knockout_tree_statistics.json", "w") as f:
     json.dump(final_output, f, indent=2)
+
+# JSON adicional semelhante a final_probabilities,
+# mas com probabilidades de cada fase do mata-mata.
+elimination_probabilities = {}
+for team, v in final_output.items():
+    elimination_probabilities[team] = {
+        "r32":          v["counts"]["R32_attempts"] / N_SIM,
+        "r16":          v["counts"]["R16_passes"]  / N_SIM,
+        "qf":           v["counts"]["QF_passes"]   / N_SIM,
+        "sf":           v["counts"]["SF_passes"]   / N_SIM,
+        "final":        v["counts"]["FINAL_passes"]/ N_SIM,
+        "champion":     v["counts"]["champions"]   / N_SIM,
+        "r32_count":    v["counts"]["R32_attempts"],
+        "r16_count":    v["counts"]["R16_passes"],
+        "qf_count":     v["counts"]["QF_passes"],
+        "sf_count":     v["counts"]["SF_passes"],
+        "final_count":  v["counts"]["FINAL_passes"],
+        "champion_count": v["counts"]["champions"],
+    }
+
+with open("data/elimination_probabilities.json", "w") as f:
+    json.dump(elimination_probabilities, f, indent=2)
 
 print(f"\nDONE — {N_SIM:,} simulações | {len(final_output)} times rastreados")
 
