@@ -160,12 +160,12 @@ THIRD_SLOTS = [
 ]
 
 try:
-    with open("data/third_combinations.json", "r") as f:
+    with open("data/combinacoes.json", "r") as f:
         THIRD_COMBINATIONS = json.load(f)
     print(f"[✓] {len(THIRD_COMBINATIONS)} combinações de terceiros carregadas", file=sys.stderr)
 except FileNotFoundError:
     THIRD_COMBINATIONS = []
-    print("[!] third_combinations.json não encontrado — slots de terceiros serão nulos", file=sys.stderr)
+    print("[!] combinacoes.json não encontrado — slots de terceiros serão nulos", file=sys.stderr)
 
 def get_third_slot_map(advancing_groups):
     """
@@ -176,7 +176,11 @@ def get_third_slot_map(advancing_groups):
     """
     key = frozenset(advancing_groups)
     for combo in THIRD_COMBINATIONS:
-        if frozenset(combo["groups_advancing"]) == key:
+        combo_groups = combo.get("groups_advancing")
+        if combo_groups is None:
+            combo_groups = [item[1] for item in combo.get("third_placed", [])]
+
+        if frozenset(combo_groups) == key:
             # third_placed[i] = "3X" onde X é a letra do grupo
             return {
                 THIRD_SLOTS[i]: combo["third_placed"][i][1]   # extrai a letra do grupo: "3E" → "E"

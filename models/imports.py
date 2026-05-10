@@ -7,3 +7,8 @@ from bs4 import BeautifulSoup
 from datetime import datetime
 from scipy.optimize import minimize
 from collections import defaultdict, Counter
+
+try:
+    import ijson
+except ModuleNotFoundError:  # pragma: no cover - fallback for local environments without ijson
+    ijson = None

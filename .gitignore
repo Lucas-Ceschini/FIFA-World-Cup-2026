@@ -223,3 +223,17 @@ data/eliminated.json
 data/group_scenarios.json
 data/worldcup_2026_full_bracket.json
 data/best_thirds.json
+data/combinacoes.json
+data/elimination_brobabilities.json
+data/knockout_tree_statistics.json
+data/worldcup_2026_full_bracket.offsets.json
+data/knockout_tree_scenarios.json
+data/final_probabilities.json
+data/worldcup_2026_full_bracket.ndjson
+data/worldcup_2026_dashboard_index.json
+data/group_scenarios.offsets.json
+data/group_scenarios.ndjson
+
+
+
+.DS_Store

@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FIFA World Cup 2026 Simulation Center</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="./styles.css">
+</head>
+<body>
+  <div class="app-shell">
+    <aside class="sidebar">
+      <div class="brand">
+        <img src="./assets/worldcup-2026-mark.svg" alt="World Cup 2026 mark" class="brand-mark">
+        <div>
+          <div class="brand-kicker">Simulation Center</div>
+          <h1>World Cup 2026</h1>
+        </div>
+      </div>
+
+      <div class="filter-block">
+        <label for="championFilter">Campeão</label>
+        <select id="championFilter" multiple></select>
+      </div>
+
+      <div class="filter-block">
+        <label for="combinationFilter">Combinação dos 3ºs</label>
+        <select id="combinationFilter" multiple></select>
+      </div>
+
+      <div class="filter-block">
+        <label for="thirdGroupFilter">Grupos dos 3ºs classificados</label>
+        <select id="thirdGroupFilter" multiple></select>
+      </div>
+
+      <div class="filter-grid">
+        <div class="filter-block">
+          <label for="teamFilter">Time em foco</label>
+          <select id="teamFilter"></select>
+        </div>
+        <div class="filter-block">
+          <label for="stageFilter">Condição</label>
+          <select id="stageFilter">
+            <option value="qualified">Qualificado</option>
+            <option value="r16">Chegou às oitavas</option>
+            <option value="qf">Chegou às quartas</option>
+            <option value="sf">Chegou à semi</option>
+            <option value="final">Chegou à final</option>
+            <option value="champion">Campeão</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="filter-grid">
+        <button id="applyFilters" class="btn-primary">Aplicar filtros</button>
+        <button id="resetFilters" class="btn-secondary">Limpar</button>
+      </div>
+
+      <div class="filter-block">
+        <label for="simulationSelect">Simulação</label>
+        <select id="simulationSelect"></select>
+      </div>
+
+      <div class="sidebar-note">
+        O site busca só o cenário selecionado, então o chaveamento abre rápido mesmo com 100.000 Copas simuladas.
+      </div>
+    </aside>
+
+    <main class="main-content">
+      <section class="hero">
+        <div class="hero-copy">
+          <div class="hero-kicker">FIFA World Cup 2026</div>
+          <h2>100.000 universos completos, do grupo à final</h2>
+          <p>
+            Exploração por cenário com bracket completo, combinações dos terceiros colocados, grupos classificados e
+            leitura visual pensada para navegar rápido entre universos da simulação.
+          </p>
+        </div>
+        <div class="hero-badge">
+          <img src="./assets/worldcup-2026-mark.svg" alt="World Cup 2026 symbol">
+          <span>Official-inspired visual system</span>
+        </div>
+      </section>
+
+      <section class="metrics" id="metrics"></section>
+
+      <section class="layout-grid">
+        <div class="panel panel-tall">
+          <div class="panel-head">
+            <h3>Resumo do recorte</h3>
+            <span id="filterSummary"></span>
+          </div>
+          <div class="table-wrap">
+            <table class="data-table" id="resultsTable">
+              <thead>
+                <tr>
+                  <th>Simulação</th>
+                  <th>Combinação</th>
+                  <th>Campeão</th>
+                  <th>Vice</th>
+                  <th>3º Lugar</th>
+                  <th>Grupos dos 3ºs</th>
+                </tr>
+              </thead>
+              <tbody></tbody>
+            </table>
+          </div>
+        </div>
+
+        <div class="panel">
+          <div class="panel-head">
+            <h3>Top campeões no recorte</h3>
+          </div>
+          <div id="championDistribution" class="bar-list"></div>
+        </div>
+      </section>
+
+      <section class="layout-grid simulation-zone">
+        <div class="panel panel-wide">
+          <div class="panel-head">
+            <h3>Chaveamento da simulação</h3>
+            <span id="selectedSimulationTag"></span>
+          </div>
+          <div class="bracket-shell">
+            <div id="bracketGrid" class="bracket-grid"></div>
+          </div>
+        </div>
+
+        <div class="panel">
+          <div class="panel-head">
+            <h3>Classificados</h3>
+          </div>
+          <div class="table-wrap compact">
+            <table class="data-table" id="classifiedTable">
+              <thead>
+                <tr>
+                  <th>Seleção</th>
+                  <th>Grupo</th>
+                  <th>Pos</th>
+                  <th>Via</th>
+                </tr>
+              </thead>
+              <tbody></tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <section class="panel">
+        <div class="panel-head">
+          <h3>Fase de grupos do cenário</h3>
+        </div>
+        <div class="groups-grid" id="groupsGrid"></div>
+      </section>
+    </main>
+  </div>
+
+  <script src="./app.js"></script>
+</body>
+</html>
