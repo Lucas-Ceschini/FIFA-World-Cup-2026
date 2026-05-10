@@ -216,3 +216,10 @@ __marimo__/
 
 # Streamlit
 .streamlit/secrets.toml
+
+# Large data files (generated JSONs)
+data/classified.json
+data/eliminated.json
+data/group_scenarios.json
+data/worldcup_2026_full_bracket.json
+data/best_thirds.json
