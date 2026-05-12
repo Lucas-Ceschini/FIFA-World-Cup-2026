@@ -2,161 +2,594 @@
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>FIFA World Cup 2026 Simulation Center</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>Simulador FIFA World Cup 2026™ | 100.000 Universos</title>
+  <meta name="description" content="100.000 simulações completas da Copa do Mundo FIFA 2026. Bracket, probabilidades, mapa de calor, radar charts.">
+  <meta name="theme-color" content="#051a2b">
+  <link rel="icon" type="image/png" href="./assets/worldcup-2026-mark.png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700;800&display=swap" media="print" onload="this.media='all'">
   <link rel="stylesheet" href="./styles.css">
+
+  <style>
+    /* ── CRITICAL ── */
+    body { margin:0; background:#051a2b; color:#10293d; font-family:"Space Grotesk",system-ui,sans-serif; opacity:0; transition:opacity .4s; overflow:hidden; }
+    body.loaded { opacity:1; }
+    body.dashboard-visible { overflow:auto; background:#f2f7f7; }
+
+    /* ══════════════════════════════════════════════════
+       SPLASH — hover-reveal background
+    ══════════════════════════════════════════════════ */
+    .splash-screen {
+      position:fixed; inset:0; z-index:9999;
+      display:flex; align-items:center; justify-content:center;
+      cursor:pointer;
+      overflow:hidden;
+      transition:opacity .7s ease, visibility .7s ease;
+    }
+    .splash-screen.hidden { opacity:0; visibility:hidden; pointer-events:none; }
+
+    /* Camada base — sempre visível */
+    .splash-bg-base {
+      position:absolute; inset:0;
+      background:linear-gradient(180deg,#051a2b 0%,#082032 40%,#0d3148 100%);
+      z-index:0;
+    }
+
+    /* Camada hover — aparece com o mouse */
+    .splash-bg-hover {
+      position:absolute; inset:0; z-index:1;
+      background:
+        radial-gradient(ellipse 120% 80% at var(--mx,50%) var(--my,50%), rgba(227,178,60,.22) 0%, transparent 60%),
+        radial-gradient(ellipse 80% 60% at calc(100% - var(--mx,50%)) var(--my,50%), rgba(10,166,166,.15) 0%, transparent 55%),
+        radial-gradient(ellipse 60% 40% at var(--mx,50%) calc(100% - var(--my,50%)), rgba(42,57,141,.18) 0%, transparent 50%);
+      opacity:0;
+      transition:opacity .4s ease;
+    }
+    .splash-screen:hover .splash-bg-hover { opacity:1; }
+
+    /* Grid decorativo */
+    .splash-grid {
+      position:absolute; inset:0; z-index:2; pointer-events:none;
+      background-image:
+        linear-gradient(rgba(255,255,255,.025) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,.025) 1px, transparent 1px);
+      background-size:60px 60px;
+      mask-image:radial-gradient(ellipse 80% 80% at 50% 50%, black 20%, transparent 80%);
+    }
+
+    /* Vinheta de borda */
+    .splash-vignette {
+      position:absolute; inset:0; z-index:3; pointer-events:none;
+      background:radial-gradient(ellipse 100% 100% at 50% 50%, transparent 40%, rgba(5,26,43,.6) 100%);
+    }
+
+    /* Conteúdo */
+    .splash-container {
+      position:relative; z-index:10;
+      text-align:center; max-width:860px; padding:40px;
+      animation:splashIn 1s ease-out both;
+    }
+    @keyframes splashIn { from{opacity:0;transform:translateY(24px)} to{opacity:1;transform:translateY(0)} }
+
+    /* Logo */
+    .splash-logo-wrapper {
+      position:relative; width:160px; height:160px;
+      display:inline-flex; align-items:center; justify-content:center;
+      margin-bottom:28px;
+    }
+    .splash-rings-svg {
+      position:absolute; inset:-30px; width:220px; height:220px;
+      animation:ringsSpin 30s linear infinite;
+    }
+    @keyframes ringsSpin { to{transform:rotate(360deg)} }
+    .splash-ring { animation:ringPulse 3s ease-in-out infinite; }
+    .splash-ring:nth-child(2) { animation-delay:.7s; }
+    .splash-ring:nth-child(3) { animation-delay:1.4s; }
+    @keyframes ringPulse { 0%,100%{opacity:.2} 50%{opacity:.6} }
+
+    .splash-trophy {
+      font-size:5.5rem; line-height:1;
+      filter:drop-shadow(0 6px 24px rgba(227,178,60,.6));
+      animation:trophyFloat 4s ease-in-out infinite;
+    }
+    @keyframes trophyFloat { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-12px)} }
+
+    /* Título */
+    .splash-eyebrow {
+      text-transform:uppercase; letter-spacing:.25em; font-size:.68rem;
+      font-weight:500; color:rgba(255,255,255,.4); margin-bottom:14px;
+    }
+    .splash-title {
+      font-size:clamp(2.8rem,7vw,5rem); font-weight:800;
+      color:#fff; line-height:.95; letter-spacing:-.03em;
+      margin-bottom:10px;
+    }
+    .splash-title-gold {
+      background:linear-gradient(135deg,#e3b23c,#f5d578 40%,#e3b23c);
+      -webkit-background-clip:text; -webkit-text-fill-color:transparent;
+      background-clip:text;
+    }
+    .splash-year {
+      font-size:clamp(1.2rem,3vw,1.8rem); font-weight:300;
+      color:rgba(255,255,255,.5); letter-spacing:.5em;
+      text-transform:uppercase; margin-bottom:24px;
+    }
+    .splash-desc {
+      font-size:1rem; color:rgba(255,255,255,.55);
+      max-width:440px; margin:0 auto 28px; line-height:1.6;
+    }
+    .splash-desc strong { color:rgba(255,255,255,.8); }
+
+    /* Badges de stats */
+    .splash-stats-row {
+      display:flex; gap:12px; justify-content:center; flex-wrap:wrap;
+      margin-bottom:28px;
+      animation:splashIn 1s ease-out .5s both;
+    }
+    .splash-stat-chip {
+      background:rgba(255,255,255,.06);
+      border:1px solid rgba(255,255,255,.1);
+      backdrop-filter:blur(12px);
+      border-radius:50px; padding:8px 18px;
+      display:flex; align-items:center; gap:8px;
+    }
+    .splash-stat-chip-val {
+      font-size:1rem; font-weight:700;
+      background:linear-gradient(135deg,#e3b23c,#f5d578);
+      -webkit-background-clip:text; -webkit-text-fill-color:transparent;
+      background-clip:text;
+    }
+    .splash-stat-chip-label { font-size:.68rem; color:rgba(255,255,255,.45); text-transform:uppercase; letter-spacing:.08em; }
+
+    /* Menu de acesso rápido — aparece ao hover */
+    .splash-menu {
+      display:flex; gap:10px; justify-content:center; flex-wrap:wrap;
+      margin-bottom:24px;
+      animation:splashIn 1s ease-out .8s both;
+    }
+    .splash-menu-item {
+      position:relative; overflow:hidden;
+      background:rgba(255,255,255,.05);
+      border:1px solid rgba(255,255,255,.1);
+      border-radius:12px; padding:12px 20px;
+      cursor:pointer; color:rgba(255,255,255,.7);
+      font-size:.82rem; font-weight:500;
+      transition:all .3s ease;
+      backdrop-filter:blur(8px);
+    }
+    .splash-menu-item::before {
+      content:'';
+      position:absolute; inset:0;
+      background:linear-gradient(135deg,rgba(227,178,60,.2),rgba(10,166,166,.15));
+      opacity:0; transition:opacity .3s ease;
+    }
+    .splash-menu-item:hover { border-color:rgba(227,178,60,.4); color:#fff; transform:translateY(-2px); }
+    .splash-menu-item:hover::before { opacity:1; }
+    .splash-menu-item span { position:relative; z-index:1; }
+
+    /* CTA */
+    .splash-cta {
+      display:inline-flex; align-items:center; gap:10px;
+      background:linear-gradient(135deg,#e3b23c,#f5d578);
+      color:#071c2b; font-weight:700; font-size:.9rem;
+      padding:14px 32px; border-radius:50px;
+      cursor:pointer; border:none; font-family:inherit;
+      box-shadow:0 8px 32px rgba(227,178,60,.35);
+      transition:all .25s ease;
+      animation:splashIn 1s ease-out 1.1s both;
+    }
+    .splash-cta:hover { transform:translateY(-2px) scale(1.02); box-shadow:0 12px 40px rgba(227,178,60,.5); }
+    .splash-cta svg { width:18px; height:18px; transition:transform .25s ease; }
+    .splash-cta:hover svg { transform:translateX(3px); }
+
+    .splash-hint {
+      margin-top:16px; font-size:.7rem; color:rgba(255,255,255,.25);
+      animation:splashIn 1s ease-out 1.8s both;
+    }
+
+    /* Partículas */
+    .splash-particles { position:absolute; inset:0; pointer-events:none; z-index:4; }
+    .splash-particle {
+      position:absolute; left:var(--x); top:var(--y);
+      font-size:calc(1rem * var(--s,1));
+      animation:pFloat var(--d,4s) ease-in-out infinite;
+      opacity:0; animation-delay:calc(var(--d,4s) * .15);
+    }
+    @keyframes pFloat {
+      0%,100%{transform:translateY(0) rotate(0deg);opacity:.08}
+      50%{transform:translateY(-20px) rotate(8deg);opacity:.35}
+    }
+
+    /* ── DASHBOARD ── */
+    .app-shell { display:grid; grid-template-columns:300px minmax(0,1fr); min-height:100vh; opacity:0; transition:opacity .5s ease; }
+    body.dashboard-visible .app-shell { opacity:1; }
+    .sidebar {
+      background:linear-gradient(180deg,#051a2b,#082032 30%,#0d3148 100%);
+      color:#fff; padding:24px 16px; position:sticky; top:0;
+      height:100vh; overflow-y:auto; overflow-x:hidden;
+      transition:width .3s ease; z-index:100;
+      border-right:1px solid rgba(255,255,255,.06);
+    }
+    .sidebar.collapsed { width:56px; padding:24px 8px; }
+    .sidebar.collapsed .brand-text,.sidebar.collapsed .filter-block,
+    .sidebar.collapsed .filter-grid,.sidebar.collapsed .filter-actions,
+    .sidebar.collapsed .sidebar-quick-stats,.sidebar.collapsed .sidebar-note { display:none; }
+    .sidebar.collapsed .brand { justify-content:center; border-bottom:none; padding-bottom:0; }
+    .skeleton {
+      background:linear-gradient(90deg,#e8f0f2,#f7fbfc 50%,#e8f0f2);
+      background-size:200% 100%; animation:shimmer 1.5s infinite;
+      border-radius:12px; height:60px; margin:8px 0;
+    }
+    @keyframes shimmer{0%{background-position:200% 0}100%{background-position:-200% 0}}
+    @media(max-width:900px){
+      .app-shell{grid-template-columns:1fr}
+      .sidebar{position:fixed;transform:translateX(-100%);z-index:100;width:85vw;max-width:360px;transition:transform .3s}
+      .sidebar.open{transform:translateX(0)}
+    }
+  </style>
 </head>
+
 <body>
-  <div class="app-shell">
-    <aside class="sidebar">
-      <div class="brand">
-        <img src="./assets/worldcup-2026-mark.svg" alt="World Cup 2026 mark" class="brand-mark">
-        <div>
-          <div class="brand-kicker">Simulation Center</div>
-          <h1>World Cup 2026</h1>
+<button class="theme-toggle" id="themeToggle" data-tooltip="Modo escuro" aria-label="Alternar modo escuro">🌙</button>
+
+<!-- ══ SPLASH ══ -->
+<div class="splash-screen" id="splashScreen">
+  <div class="splash-bg-base"></div>
+  <div class="splash-bg-banner"></div>   <!-- NOVA CAMADA -->
+  <div class="splash-bg-hover" id="splashBgHover"></div>
+  <div class="splash-grid"></div>
+  <div class="splash-vignette"></div>
+
+  <div class="splash-container">
+    <div class="splash-logo-wrapper">
+      <svg class="splash-rings-svg" viewBox="0 0 220 220">
+        <circle class="splash-ring" cx="110" cy="110" r="95" fill="none" stroke="rgba(227,178,60,.2)" stroke-width=".8"/>
+        <circle class="splash-ring" cx="110" cy="110" r="103" fill="none" stroke="rgba(227,178,60,.13)" stroke-width=".5"/>
+        <circle class="splash-ring" cx="110" cy="110" r="108" fill="none" stroke="rgba(10,166,166,.1)" stroke-width=".5"/>
+        <path d="M30 110 C30 50,60 15,110 10 C160 5,190 50,190 110" fill="none" stroke="#e3b23c" stroke-width="1.5" stroke-linecap="round" stroke-dasharray="300" stroke-dashoffset="300" style="animation:drawArc 2.5s ease-out .3s forwards"/>
+        <path d="M190 110 C190 170,160 205,110 210 C60 215,30 170,30 110" fill="none" stroke="#0aa6a6" stroke-width="1" stroke-linecap="round" stroke-dasharray="300" stroke-dashoffset="300" style="animation:drawArc 2s ease-out 1s forwards"/>
+        <defs><style>@keyframes drawArc{to{stroke-dashoffset:0}}</style></defs>
+      </svg>
+          <img 
+      src="./assets/worldcup-2026-mark.png" 
+      alt="FIFA World Cup 2026" 
+      class="splash-trophy-png"
+      width="90" 
+      height="140"
+      onerror="this.style.display='none';this.nextElementSibling.style.display='block';"
+    >
+    <span class="splash-trophy-fallback" style="display:none;font-size:5.5rem;line-height:1;filter:drop-shadow(0 6px 24px rgba(227,178,60,.6));animation:trophyFloat 4s ease-in-out infinite">🏆</span>   
+    </div>
+
+    <div class="splash-eyebrow">FIFA World Cup 2026™ · Simulation Center</div>
+    <div class="splash-title">
+      <span class="splash-title-gold">SIMULADOR</span>
+    </div>
+    <div class="splash-year">F I F A   2 0 2 6</div>
+    <p class="splash-desc">
+      <strong>100.000 universos</strong> completos — do sorteio dos grupos à final.
+      Bradley-Terry · Dixon-Coles · Odds Bet365.
+    </p>
+
+    <div class="splash-stats-row">
+      <div class="splash-stat-chip"><span class="splash-stat-chip-val">100K</span><span class="splash-stat-chip-label">Simulações</span></div>
+      <div class="splash-stat-chip"><span class="splash-stat-chip-val">48</span><span class="splash-stat-chip-label">Seleções</span></div>
+      <div class="splash-stat-chip"><span class="splash-stat-chip-val">495</span><span class="splash-stat-chip-label">Combinações de 3ºs</span></div>
+      <div class="splash-stat-chip"><span class="splash-stat-chip-val">104</span><span class="splash-stat-chip-label">Jogos por Copa</span></div>
+    </div>
+
+    <div class="splash-menu">
+      <div class="splash-menu-item"><span>📊 Visão Geral</span></div>
+      <div class="splash-menu-item"><span>🏟️ Chaveamento</span></div>
+      <div class="splash-menu-item"><span>🌡️ Mapa de Calor</span></div>
+      <div class="splash-menu-item"><span>📡 Radar Chart</span></div>
+      <div class="splash-menu-item"><span>⚖️ Comparar Times</span></div>
+    </div>
+
+    <button class="splash-cta" id="splashCta">
+      <span>Explorar Simulações</span>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+    </button>
+
+    <div class="splash-hint">Clique em qualquer lugar ou pressione qualquer tecla</div>
+  </div>
+
+  <div class="splash-particles">
+    <span class="splash-particle" style="--x:6%;--y:15%;--d:3.8s;--s:.7">⚽</span>
+    <span class="splash-particle" style="--x:91%;--y:22%;--d:4.5s;--s:1.1">🏟️</span>
+    <span class="splash-particle" style="--x:15%;--y:80%;--d:3.2s;--s:.5">⭐</span>
+    <span class="splash-particle" style="--x:83%;--y:75%;--d:5s;--s:.9">🌍</span>
+    <span class="splash-particle" style="--x:47%;--y:9%;--d:4.2s;--s:.6">🎯</span>
+    <span class="splash-particle" style="--x:88%;--y:88%;--d:3.5s;--s:.8">🔥</span>
+    <span class="splash-particle" style="--x:53%;--y:91%;--d:4s;--s:.7">📊</span>
+    <span class="splash-particle" style="--x:26%;--y:55%;--d:4.8s;--s:.55">🎲</span>
+  </div>
+</div>
+
+<!-- ══ DASHBOARD ══ -->
+<a href="#main-content" class="skip-link">Pular para conteúdo</a>
+<div class="sidebar-overlay"></div>
+
+<div class="app-shell">
+  <aside class="sidebar" role="complementary" aria-label="Filtros">
+    <button class="sidebar-toggle" id="sidebarToggle" title="Recolher sidebar" aria-label="Recolher menu lateral">◀</button>
+    <button class="sidebar-close" aria-label="Fechar">✕</button>
+
+    <div class="brand">
+      <img 
+        src="./assets/worldcup-2026-mark.png" 
+        alt="FIFA World Cup 2026" 
+        class="brand-mark" 
+        width="40" 
+        height="40"
+        onerror="this.style.display='none';this.nextElementSibling.style.display='flex';"
+      >
+      <span style="font-size:1.8rem;flex-shrink:0;display:none">🏆</span>
+      <div class="brand-text">
+        <span class="brand-kicker">Simulador Oficial</span>
+        <h1>FIFA World Cup 2026™</h1>
+      </div>
+    </div>
+
+    <div class="sidebar-quick-stats" id="quickStats">
+      <div class="stat-mini"><span class="stat-mini-value">—</span><span class="stat-mini-label">Cenários</span></div>
+      <div class="stat-mini"><span class="stat-mini-value">—</span><span class="stat-mini-label">Times</span></div>
+    </div>
+
+    <form id="filterForm" autocomplete="off">
+      <div class="filter-block">
+        <label for="quickSearch">🔍 Busca rápida</label>
+        <input type="text" id="quickSearch" placeholder="Time ou grupo..." class="search-input">
+      </div>
+      <div class="filter-block">
+        <label>⭐ Favoritos rápidos</label>
+        <div class="filter-chips" id="favoriteChips">
+          <span class="filter-chip" data-team="Brazil">🇧🇷 Brasil</span>
+          <span class="filter-chip" data-team="Argentina">🇦🇷 Argentina</span>
+          <span class="filter-chip" data-team="France">🇫🇷 França</span>
+          <span class="filter-chip" data-team="Germany">🇩🇪 Alemanha</span>
+          <span class="filter-chip" data-team="England">🏴󠁧󠁢󠁥󠁮󠁧󠁿 Inglaterra</span>
+          <span class="filter-chip" data-team="Spain">🇪🇸 Espanha</span>
+          <span class="filter-chip" data-team="Portugal">🇵🇹 Portugal</span>
+          <span class="filter-chip" data-team="Netherlands">🇳🇱 Holanda</span>
         </div>
       </div>
-
       <div class="filter-block">
-        <label for="championFilter">Campeão</label>
-        <select id="championFilter" multiple></select>
+        <label for="championFilter">🏆 Campeão</label>
+        <select id="championFilter" multiple aria-label="Filtrar por campeão"></select>
       </div>
-
       <div class="filter-block">
-        <label for="combinationFilter">Combinação dos 3ºs</label>
-        <select id="combinationFilter" multiple></select>
+        <label for="combinationFilter">🔄 Combinação 3ºs</label>
+        <select id="combinationFilter" multiple aria-label="Filtrar por combinação"></select>
       </div>
-
       <div class="filter-block">
-        <label for="thirdGroupFilter">Grupos dos 3ºs classificados</label>
-        <select id="thirdGroupFilter" multiple></select>
+        <label for="thirdGroupFilter">📊 Grupos dos 3ºs</label>
+        <select id="thirdGroupFilter" multiple aria-label="Filtrar por grupos dos terceiros"></select>
       </div>
-
       <div class="filter-grid">
         <div class="filter-block">
-          <label for="teamFilter">Time em foco</label>
-          <select id="teamFilter"></select>
+          <label for="teamFilter">👤 Time foco</label>
+          <select id="teamFilter" aria-label="Selecionar time"></select>
         </div>
         <div class="filter-block">
-          <label for="stageFilter">Condição</label>
+          <label for="stageFilter">🎯 Fase</label>
           <select id="stageFilter">
             <option value="qualified">Qualificado</option>
-            <option value="r16">Chegou às oitavas</option>
-            <option value="qf">Chegou às quartas</option>
-            <option value="sf">Chegou à semi</option>
-            <option value="final">Chegou à final</option>
+            <option value="r16">Oitavas</option>
+            <option value="qf">Quartas</option>
+            <option value="sf">Semi</option>
+            <option value="final">Final</option>
             <option value="champion">Campeão</option>
           </select>
         </div>
       </div>
-
-      <div class="filter-grid">
-        <button id="applyFilters" class="btn-primary">Aplicar filtros</button>
-        <button id="resetFilters" class="btn-secondary">Limpar</button>
+      <div class="filter-actions">
+        <button id="applyFilters" type="submit" class="btn-primary">🔍 Aplicar</button>
+        <button id="resetFilters" type="reset" class="btn-secondary">↺ Limpar</button>
       </div>
-
       <div class="filter-block">
-        <label for="simulationSelect">Simulação</label>
-        <select id="simulationSelect"></select>
+        <label for="simulationSelect">🎲 Simulação</label>
+        <div class="simulation-nav">
+          <button type="button" id="prevSim" class="btn-icon-only" title="Anterior">◀</button>
+          <select id="simulationSelect" aria-label="Selecionar simulação" style="flex:1"><option value="">Selecione...</option></select>
+          <button type="button" id="nextSim" class="btn-icon-only" title="Próximo">▶</button>
+        </div>
+        <div class="simulation-info" id="simulationInfo" style="font-size:.65rem;color:rgba(255,255,255,.4);margin-top:4px;text-align:center">Simulação 1 de 100.000</div>
+      </div>
+    </form>
+
+    <div class="sidebar-note"><p>💡 Navegação rápida entre 100.000 cenários completos</p></div>
+  </aside>
+
+  <main class="main-content" id="main-content">
+    <button class="mobile-menu-btn" aria-label="Menu">☰ Filtros</button>
+
+    <nav class="tab-nav" role="tablist" aria-label="Seções principais">
+      <button class="tab-btn active" role="tab" aria-selected="true"  data-tab="overview">📊 Visão Geral</button>
+      <button class="tab-btn" role="tab" aria-selected="false" data-tab="bracket">🏟️ Chaveamento</button>
+      <button class="tab-btn" role="tab" aria-selected="false" data-tab="groups">👥 Grupos</button>
+      <button class="tab-btn" role="tab" aria-selected="false" data-tab="stats">📈 Estatísticas</button>
+      <button class="tab-btn" role="tab" aria-selected="false" data-tab="heatmap">🌡️ Mapa de Calor</button>
+      <button class="tab-btn" role="tab" aria-selected="false" data-tab="compare">⚖️ Comparar</button>
+    </nav>
+
+    <!-- ── TAB: VISÃO GERAL ── -->
+    <section class="tab-panel active" role="tabpanel" id="tab-overview">
+      <div class="metrics" id="metrics" aria-live="polite">
+        <div class="metric-card"><div class="metric-label">🔍 Cenários</div><div class="metric-value">—</div></div>
+        <div class="metric-card"><div class="metric-label">🎲 Simulação</div><div class="metric-value">—</div></div>
+        <div class="metric-card gold"><div class="metric-label">🏆 Campeão</div><div class="metric-value">—</div></div>
+        <div class="metric-card"><div class="metric-label">🥈 Vice</div><div class="metric-value">—</div></div>
+        <div class="metric-card"><div class="metric-label">🥉 3º Lugar</div><div class="metric-value">—</div></div>
       </div>
 
-      <div class="sidebar-note">
-        O site busca só o cenário selecionado, então o chaveamento abre rápido mesmo com 100.000 Copas simuladas.
+      <div class="panel summary-panel">
+        <div class="panel-head"><h3>📋 Resumo da Copa</h3><span id="filterSummary" class="panel-subtitle"></span></div>
+        <div id="summaryContent" class="summary-content"><p class="empty-state">Selecione uma simulação para ver o resumo</p></div>
       </div>
-    </aside>
 
-    <main class="main-content">
-      <section class="hero">
-        <div class="hero-copy">
-          <div class="hero-kicker">FIFA World Cup 2026</div>
-          <h2>100.000 universos completos, do grupo à final</h2>
-          <p>
-            Exploração por cenário com bracket completo, combinações dos terceiros colocados, grupos classificados e
-            leitura visual pensada para navegar rápido entre universos da simulação.
-          </p>
-        </div>
-        <div class="hero-badge">
-          <img src="./assets/worldcup-2026-mark.svg" alt="World Cup 2026 symbol">
-          <span>Official-inspired visual system</span>
-        </div>
-      </section>
-
-      <section class="metrics" id="metrics"></section>
-
-      <section class="layout-grid">
-        <div class="panel panel-tall">
-          <div class="panel-head">
-            <h3>Resumo do recorte</h3>
-            <span id="filterSummary"></span>
-          </div>
+      <div class="layout-grid">
+        <div class="panel">
+          <div class="panel-head"><h3>📋 Resultados</h3><span id="resultCount" class="panel-badge">0</span></div>
           <div class="table-wrap">
             <table class="data-table" id="resultsTable">
-              <thead>
-                <tr>
-                  <th>Simulação</th>
-                  <th>Combinação</th>
-                  <th>Campeão</th>
-                  <th>Vice</th>
-                  <th>3º Lugar</th>
-                  <th>Grupos dos 3ºs</th>
-                </tr>
-              </thead>
+              <thead><tr><th>#</th><th>Comb.</th><th>Campeão</th><th>Vice</th><th>3º</th><th>Grupos 3ºs</th></tr></thead>
               <tbody></tbody>
             </table>
           </div>
         </div>
-
         <div class="panel">
-          <div class="panel-head">
-            <h3>Top campeões no recorte</h3>
-          </div>
+          <div class="panel-head"><h3>🏆 Top 10 Campeões</h3></div>
           <div id="championDistribution" class="bar-list"></div>
         </div>
-      </section>
+      </div>
 
-      <section class="layout-grid simulation-zone">
-        <div class="panel panel-wide">
-          <div class="panel-head">
-            <h3>Chaveamento da simulação</h3>
-            <span id="selectedSimulationTag"></span>
-          </div>
-          <div class="bracket-shell">
-            <div id="bracketGrid" class="bracket-grid"></div>
-          </div>
+      <!-- Funil de probabilidades -->
+      <div class="panel" style="margin-top:16px">
+        <div class="panel-head"><h3>🎯 Funil de Classificação — Top 10</h3></div>
+        <div id="funnelChart" style="padding:16px 8px"></div>
+      </div>
+    </section>
+
+    <!-- ── TAB: CHAVEAMENTO ── -->
+    <section class="tab-panel" role="tabpanel" id="tab-bracket">
+      <div class="panel">
+        <div class="panel-head"><h3>🏟️ Chaveamento Completo</h3><span id="selectedSimulationTag" class="panel-subtitle"></span></div>
+        <div class="bracket-controls">
+          <button id="zoomIn" class="btn-icon-only" title="Zoom +">➕</button>
+          <button id="zoomOut" class="btn-icon-only" title="Zoom -">➖</button>
+          <button id="resetZoom" class="btn-icon-only" title="Reset">↺</button>
+          <span id="zoomLevel" class="zoom-indicator">100%</span>
         </div>
+        <div class="bracket-shell" id="bracketShell"><div id="bracketGrid" class="bracket-grid"></div></div>
+      </div>
+      <div class="panel" style="margin-top:16px">
+        <div class="panel-head"><h3>👥 Classificados</h3></div>
+        <div class="table-wrap compact">
+          <table class="data-table" id="classifiedTable">
+            <thead><tr><th>Seleção</th><th>Grupo</th><th>Pos</th><th>Via</th></tr></thead>
+            <tbody></tbody>
+          </table>
+        </div>
+      </div>
+    </section>
 
+    <!-- ── TAB: GRUPOS ── -->
+    <section class="tab-panel" role="tabpanel" id="tab-groups">
+      <div class="panel"><div class="panel-head"><h3>👥 Fase de Grupos</h3></div><div class="groups-grid" id="groupsGrid"></div></div>
+    </section>
+
+    <!-- ── TAB: ESTATÍSTICAS ── -->
+    <section class="tab-panel" role="tabpanel" id="tab-stats">
+      <div class="layout-grid">
         <div class="panel">
-          <div class="panel-head">
-            <h3>Classificados</h3>
-          </div>
-          <div class="table-wrap compact">
-            <table class="data-table" id="classifiedTable">
-              <thead>
-                <tr>
-                  <th>Seleção</th>
-                  <th>Grupo</th>
-                  <th>Pos</th>
-                  <th>Via</th>
-                </tr>
-              </thead>
+          <div class="panel-head"><h3>📊 Probabilidades por Fase</h3></div>
+          <div class="table-wrap">
+            <table class="data-table" id="statsTable">
+              <thead><tr><th>Time</th><th>🏆</th><th>Final</th><th>Semi</th><th>QF</th><th>R16</th><th>R32</th></tr></thead>
               <tbody></tbody>
             </table>
           </div>
         </div>
-      </section>
-
-      <section class="panel">
-        <div class="panel-head">
-          <h3>Fase de grupos do cenário</h3>
+        <div class="panel">
+          <div class="panel-head"><h3>🎯 Performance por Confronto</h3></div>
+          <div id="h2hStats" class="bar-list"></div>
         </div>
-        <div class="groups-grid" id="groupsGrid"></div>
-      </section>
-    </main>
-  </div>
+      </div>
 
-  <script src="./app.js"></script>
+      <!-- Gráfico de bolhas / infográfico -->
+      <div class="panel" style="margin-top:16px">
+        <div class="panel-head"><h3>📡 Perfil de Probabilidades — Top 16</h3><span class="panel-subtitle">Largura = chance de título</span></div>
+        <div id="bubbleChart" style="padding:16px"></div>
+      </div>
+    </section>
+
+    <!-- ── TAB: MAPA DE CALOR ── -->
+    <section class="tab-panel" role="tabpanel" id="tab-heatmap">
+      <div class="panel">
+        <div class="panel-head">
+          <h3>🌡️ Mapa de Calor — Probabilidade por Fase</h3>
+          <select id="heatmapMetric" style="width:auto;min-height:auto;padding:6px 12px;font-size:.8rem;background:var(--surface);color:var(--text);border:1px solid var(--line);border-radius:8px;">
+            <option value="champion_prob">🏆 Título</option>
+            <option value="final_prob">🥈 Final</option>
+            <option value="semifinal_prob">🥉 Semifinal</option>
+            <option value="quarterfinal_prob">🏟️ Quartas</option>
+            <option value="r16_prob">📊 Oitavas</option>
+          </select>
+        </div>
+        <div id="heatmapGrid" style="padding:16px"></div>
+      </div>
+      <div class="panel" style="margin-top:16px">
+        <div class="panel-head"><h3>📊 Distribuição de Favoritos</h3></div>
+        <div id="tierChart" style="padding:16px"></div>
+      </div>
+    </section>
+
+    <!-- ── TAB: COMPARAR ── -->
+    <section class="tab-panel" role="tabpanel" id="tab-compare">
+      <div class="panel">
+        <div class="panel-head"><h3>⚖️ Comparar Times</h3></div>
+        <div class="compare-controls">
+          <select id="compareTeam1" class="compare-select"><option value="">Time 1</option></select>
+          <span class="vs-text">VS</span>
+          <select id="compareTeam2" class="compare-select"><option value="">Time 2</option></select>
+          <button id="compareBtn" class="btn-primary">Comparar</button>
+        </div>
+        <div id="compareResults" class="compare-results">
+          <p style="color:var(--text);text-align:center;padding:40px">Selecione dois times para comparar</p>
+        </div>
+      </div>
+
+      <!-- Radar chart SVG -->
+      <div class="panel" style="margin-top:16px" id="radarPanel">
+        <div class="panel-head"><h3>📡 Radar Chart — Perfil Comparativo</h3></div>
+        <div id="radarContainer" style="display:flex;justify-content:center;padding:24px">
+          <p style="color:var(--muted);font-size:.85rem;padding:40px">Selecione dois times e clique em Comparar</p>
+        </div>
+      </div>
+    </section>
+  </main>
+</div>
+
+<div id="sr-announcer" class="sr-only" aria-live="polite" aria-atomic="true"></div>
+<script src="./app.js" defer></script>
+
+<script>
+(function(){
+  // Hover background effect
+  var splash = document.getElementById('splashScreen');
+  var hoverBg = document.getElementById('splashBgHover');
+  if(splash && hoverBg){
+    splash.addEventListener('mousemove', function(e){
+      var rect = splash.getBoundingClientRect();
+      var x = ((e.clientX - rect.left) / rect.width * 100).toFixed(1) + '%';
+      var y = ((e.clientY - rect.top) / rect.height * 100).toFixed(1) + '%';
+      hoverBg.style.setProperty('--mx', x);
+      hoverBg.style.setProperty('--my', y);
+    });
+  }
+
+  var body = document.body;
+  var revealed = false;
+  function reveal(){
+    if(revealed) return; revealed = true;
+    splash.classList.add('hidden');
+    body.classList.add('dashboard-visible');
+    try{ sessionStorage.setItem('splash-seen','true'); }catch(e){}
+  }
+  try{
+    if(sessionStorage.getItem('splash-seen')==='true'){
+      splash.style.display='none'; body.classList.add('dashboard-visible','loaded'); return;
+    }
+  }catch(e){}
+  splash.addEventListener('click', reveal);
+  document.addEventListener('keydown', reveal);
+  document.addEventListener('touchstart', reveal, {once:true});
+  document.getElementById('splashCta')?.addEventListener('click', function(e){ e.stopPropagation(); reveal(); });
+  body.classList.add('loaded');
+})();
+</script>
 </body>
 </html>

@@ -45,6 +45,8 @@ function sendFile(res, filePath) {
     ".css": "text/css; charset=utf-8",
     ".js": "application/javascript; charset=utf-8",
     ".svg": "image/svg+xml",
+    ".png": "image/png",
+    ".json": "application/json; charset=utf-8",
   };
 
   if (!fs.existsSync(filePath)) {
@@ -90,7 +92,7 @@ function filterIndex(searchParams) {
   const thirdGroups = new Set(searchParams.getAll("third_group"));
   const team = searchParams.get("team") || "";
   const stage = searchParams.get("stage") || "qualified";
-  const limit = Math.min(Number(searchParams.get("limit") || 250), 500);
+  const limit = Math.min(Number(searchParams.get("limit") || 100000), 100000);
 
   const rows = INDEX.filter((entry) => {
     if (champions.size && !champions.has(entry.champion)) return false;
@@ -128,9 +130,28 @@ const server = http.createServer(async (req, res) => {
   }
 
   if (url.pathname === "/api/stats") {
+    // Agora envia os stats completos diretamente, sem wrapper
     sendJson(res, {
       team_stats: TEAM_STATS,
       final_probabilities: FINAL_PROBS,
+    });
+    return;
+  }
+
+  // Rota de debug para ver a estrutura
+  if (url.pathname === "/api/debug/stats") {
+    const keys = Object.keys(TEAM_STATS);
+    const firstKey = keys[0];
+    const firstVal = TEAM_STATS[firstKey];
+    sendJson(res, {
+      total_keys: keys.length,
+      first_key: firstKey,
+      first_value: firstVal,
+      first_value_type: typeof firstVal,
+      first_value_keys: typeof firstVal === 'object' ? Object.keys(firstVal) : null,
+      sample_keys: keys.slice(0, 5),
+      final_probs_keys: Object.keys(FINAL_PROBS).slice(0, 5),
+      final_probs_first: FINAL_PROBS[Object.keys(FINAL_PROBS)[0]],
     });
     return;
   }
@@ -167,6 +188,7 @@ const server = http.createServer(async (req, res) => {
 
 server.listen(PORT, HOST, () => {
   console.log(`Site disponível em http://${HOST}:${PORT}`);
+  console.log(`Debug stats: http://${HOST}:${PORT}/api/debug/stats`);
 });
 
 process.on("SIGINT", () => {
